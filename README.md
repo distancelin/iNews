@@ -1,5 +1,5 @@
 # iNews
-#### A simple android app with MVP architecture
+#### 简单的基于MVP架构的Android新闻客户端
 for my practice with MVP architecture in Android which uses Volley for network request.
 ## screen shot
 <img src="screenshots/mainNews.png" width="40%" />
