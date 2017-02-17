@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">爱看新闻</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="news">新闻</string>
+    <string name="today">今天</string>
+    <string name="refresh">刷新</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="tabs">
+        <item>头条</item>
+        <item>社会</item>
+        <item>体育</item>
+        <item>时尚</item>
+        <item>娱乐</item>
+    </string-array>
+</resources>

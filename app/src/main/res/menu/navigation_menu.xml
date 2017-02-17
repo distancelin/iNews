@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".Main.MainActivity">
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/news"
+        android:icon="@drawable/ic_action_news"
+        android:title="新闻"
+        android:checked="true"
+        />
+    <item
+        android:id="@+id/today"
+        android:icon="@drawable/ic_action_calendar_day"
+        android:title="今天"
+        />
+    </group>
+</menu>
