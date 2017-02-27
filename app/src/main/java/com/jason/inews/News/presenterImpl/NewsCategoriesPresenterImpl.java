@@ -12,11 +12,11 @@ import java.util.List;
  * Created by 16276 on 2017/1/18.
  */
 
-public class NewsPresenterImpl implements NewsContract.iNewsPresenter, NewsContract.onNewsLoadingListener {
-    private NewsContract.iNewsView mNewsView;
+public class NewsCategoriesPresenterImpl implements NewsContract.NewsCategoriesPresenter, NewsContract.onNewsLoadingListener {
+    private NewsContract.NewsCategoriesView mNewsView;
     private NewsModelImpl mNewsModel;
 
-    public NewsPresenterImpl(NewsContract.iNewsView newsView) {
+    public NewsCategoriesPresenterImpl(NewsContract.NewsCategoriesView newsView) {
         mNewsModel = new NewsModelImpl();
         mNewsView = newsView;
     }
@@ -39,6 +39,11 @@ public class NewsPresenterImpl implements NewsContract.iNewsPresenter, NewsContr
             case 4:
                 mNewsModel.getNews("http://v.juhe.cn/toutiao/index?type=yule&key=b3e2de2ff0805690895bb4e4d03e8032", context, this);
         }
+    }
+
+    @Override
+    public void loadDetailNews(String newsDetailUrl, Context context) {
+
     }
 
     @Override

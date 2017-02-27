@@ -78,7 +78,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(fragment.getActivity(), NewsDetailAct.class);
-                    intent.putExtra("newDetailUrl", dataBeen.get(ViewHolder.this.getPosition()).getUrl());
+                    String[] urls = new String[2];
+                    //获取新闻详情url
+                    urls[0] = dataBeen.get(ViewHolder.this.getAdapterPosition()).getUrl();
+                    //获取新闻图片url
+                    urls[1] = dataBeen.get(ViewHolder.this.getAdapterPosition()).getThumbnail_pic_s02();
+                    intent.putExtra("urls", urls);
                     fragment.getActivity().startActivity(intent);
                 }
             });

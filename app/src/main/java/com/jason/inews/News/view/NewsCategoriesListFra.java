@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.NewsContract;
 import com.jason.inews.News.adapters.RecyclerViewAdapter;
-import com.jason.inews.News.presenterImpl.NewsPresenterImpl;
+import com.jason.inews.News.presenterImpl.NewsCategoriesPresenterImpl;
 import com.jason.inews.R;
 
 
@@ -28,18 +28,18 @@ import java.util.List;
  * Created by 16276 on 2017/1/26.
  */
 
-public class NewsListFra extends Fragment implements NewsContract.iNewsView {
+public class NewsCategoriesListFra extends Fragment implements NewsContract.NewsCategoriesView {
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private NewsContract.iNewsPresenter presenter;
+    private NewsContract.NewsCategoriesPresenter presenter;
     private RecyclerViewAdapter recyclerAdapter;
     private int tabID;
 
     //创建每一类新闻fragment的时候为其赋值新闻类型参数（tabId）
-    public static NewsListFra newInstance(int newsType) {
+    public static NewsCategoriesListFra newInstance(int newsType) {
         Bundle args = new Bundle();
         args.putInt("newsType", newsType);
-        NewsListFra newsListFra = new NewsListFra();
+        NewsCategoriesListFra newsListFra = new NewsCategoriesListFra();
         newsListFra.setArguments(args);
         return newsListFra;
     }
@@ -48,12 +48,11 @@ public class NewsListFra extends Fragment implements NewsContract.iNewsView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fra_news, container, false);
         initViews(view);
-        presenter = new NewsPresenterImpl(this);
+        presenter = new NewsCategoriesPresenterImpl(this);
         tabID = getArguments().getInt("newsType");
         swipeRefreshLayout.setRefreshing(true);
         presenter.loadNews(tabID, getContext());
         swtUpSwipeToRefresh(swipeRefreshLayout, tabID);
-        setHasOptionsMenu(true);
         return view;
     }
 
@@ -64,6 +63,7 @@ public class NewsListFra extends Fragment implements NewsContract.iNewsView {
         rv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerAdapter = new RecyclerViewAdapter(null, this);
         rv.setAdapter(recyclerAdapter);
+        rv.setHasFixedSize(true);
     }
 
     private void swtUpSwipeToRefresh(SwipeRefreshLayout swipeRefreshLayout, final int tabId) {

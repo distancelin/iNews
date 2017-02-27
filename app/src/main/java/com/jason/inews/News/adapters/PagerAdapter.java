@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.jason.inews.News.view.NewsListFra;
+import com.jason.inews.News.view.NewsCategoriesListFra;
 import com.jason.inews.R;
 
 /**
@@ -21,7 +21,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return NewsListFra.newInstance(position);
+        return NewsCategoriesListFra.newInstance(position);
 
     }
 

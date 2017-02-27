@@ -16,7 +16,7 @@ import com.jason.inews.R;
 import com.jason.inews.Today.view.TodayFra;
 import com.jason.inews.Utils.FragmentUtil;
 
-public class MainActivity extends AppCompatActivity implements OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
@@ -69,13 +69,5 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             }
         });
     }
-
-    @Override
-    public void onItemClick() {
-
-    }
 }
 
-interface OnItemClickListener {
-    void onItemClick();
-}
