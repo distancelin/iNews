@@ -6,8 +6,8 @@ for my practice with MVP architecture in Android which uses Volley for network r
 <img src="screenshots/newsDetail.png" width="40%" />
 <img src="screenshots/shoot2.png" width="40%" />
 ## todo
-1. load news page by page.
-2. improve implementation of display detail news
+improve implementation of display news categories
+
 ## about me
-A new to Android development with strong desire.you can contact me at coder_Jason_163.com.  
+A new to Android development with strong desire.you can contact me at coder_Jason@163.com.
 By the way,may I have your star please 0.0
