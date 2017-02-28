@@ -17,6 +17,9 @@ import com.jason.inews.News.presenterImpl.NewsDetailPresenterImpl;
 import com.jason.inews.R;
 import com.jason.inews.Utils.ImageLoaderUtil;
 
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 /**
  * Created by distancelin on 2017/2/16.
  */
@@ -26,27 +29,24 @@ public class NewsDetailAct extends AppCompatActivity implements NewsContract.New
     private Toolbar mToolbar;
     private NewsContract.NewsDetailPresenter mPresenter;
     private ImageView mImageView;
-    private WebView mWebView;
-    private String[] urls;
+    private String[] mUrls;
+    private HtmlTextView mHtmlTextView;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_detail_news);
         mPresenter = new NewsDetailPresenterImpl(this);
         initViews();
-        ImageLoaderUtil.loadImage(getApplicationContext(), urls[1], mImageView);
-        mWebView.getSettings().setLoadsImagesAutomatically(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new NoAdWebViewClient(this, urls[0]));
-        mWebView.loadUrl(urls[0]);
-//        mPresenter.loadDetailNews(urls[0], getApplicationContext());
+        ImageLoaderUtil.loadImage(getApplicationContext(), mUrls[1], mImageView);
+        mPresenter.loadDetailNews(mUrls[0], getApplicationContext());
     }
 
     private void initViews() {
         mToolbar = (Toolbar) findViewById(R.id.newsDetailToolbar);
         mImageView = (ImageView) findViewById(R.id.detailNewsImage);
-        mWebView = (WebView) findViewById(R.id.detailNewsContent);
-        urls = getIntent().getStringArrayExtra("urls");
+//        mWebView = (WebView) findViewById(R.id.detailNewsContent);
+        mHtmlTextView = (HtmlTextView) findViewById(R.id.content);
+        mUrls = getIntent().getStringArrayExtra("urls");
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collToolbarLayout);
         collapsingToolbarLayout.setTitle("新闻详情");
         setSupportActionBar(mToolbar);
@@ -55,10 +55,17 @@ public class NewsDetailAct extends AppCompatActivity implements NewsContract.New
 
     @Override
     public void showNews(String detailNews) {
-        ImageLoaderUtil.loadImage(getApplicationContext(), urls[1], mImageView);
-        mWebView.getSettings().setLoadsImagesAutomatically(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new NoAdWebViewClient(this, urls[0]));
+        //判断图片url是否为null
+        if (mUrls[1] != null) {
+            ImageLoaderUtil.loadImage(getApplicationContext(), mUrls[1], mImageView);
+        } else {
+            //为空显示JJ图片
+            mImageView.setImageResource(R.drawable.jj);
+        }
+        mHtmlTextView.setHtml(detailNews, new HtmlHttpImageGetter(mHtmlTextView, null, true));
+//        mWebView.getSettings().setLoadsImagesAutomatically(true);
+//        mWebView.getSettings().setJavaScriptEnabled(true);
+//        mWebView.setWebViewClient(new NoAdWebViewClient(this, mUrls[0]));
 
     }
 
@@ -70,45 +77,5 @@ public class NewsDetailAct extends AppCompatActivity implements NewsContract.New
     @Override
     public void dismissProgress() {
 
-    }
-}
-
-class NoAdWebViewClient extends WebViewClient {
-    private String homeurl;
-    private Context context;
-
-    public NoAdWebViewClient(Context context, String homeurl) {
-        this.context = context;
-        this.homeurl = homeurl;
-    }
-
-
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        url = url.toLowerCase();
-        if (!url.contains(homeurl)) {
-            if (!ADFilterTool.hasAd(context, url)) {
-                return super.shouldInterceptRequest(view, url);
-            } else {
-                return new WebResourceResponse(null, null, null);
-            }
-        } else {
-            return super.shouldInterceptRequest(view, url);
-        }
-
-
-    }
-}
-
-class ADFilterTool {
-    public static boolean hasAd(Context context, String url) {
-        Resources res = context.getResources();
-        String[] adUrls = res.getStringArray(R.array.adBlockUrl);
-        for (String adUrl : adUrls) {
-            if (url.contains(adUrl)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
