@@ -23,6 +23,7 @@ public class NewsMainFra extends Fragment {
         View view = inflater.inflate(R.layout.tab_and_pager, container, false);
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         mPager = (ViewPager) view.findViewById(R.id.pager);
+        mPager.setOffscreenPageLimit(4);
         mPager.setAdapter(new PagerAdapter(getChildFragmentManager(), getResources()));
         mTabLayout.setupWithViewPager(mPager);
         return view;
