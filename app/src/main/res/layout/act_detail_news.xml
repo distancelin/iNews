@@ -34,12 +34,13 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        >
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/content"
             android:textSize="15sp" />
     </android.support.v4.widget.NestedScrollView>

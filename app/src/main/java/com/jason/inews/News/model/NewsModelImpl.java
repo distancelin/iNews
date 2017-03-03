@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.NewsContract;
+import com.jason.inews.News.volleyStringRequest.CharsetStringRequest;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -43,12 +44,14 @@ public class NewsModelImpl implements iNewsModel {
     @Override
     public void getDetailNews(String detailNewsUrl, Context context, final NewsContract.onDetaiNewsLoadingListener listener) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, detailNewsUrl, new Response.Listener<String>() {
+        CharsetStringRequest stringRequest = new CharsetStringRequest(Request.Method.GET, detailNewsUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //删除重复的标题
                 String[] result = response.split("<title>(.*)</title>\\r\\n");
-                String finalResponse = result[0] + result[1];
+                String Response = result[0] + result[1];
+                String[] finalResponses = Response.split("<h1 class=\"title\">(.*)</h1>\\r\\n");
+                String finalResponse = finalResponses[0] + finalResponses[1];
                 listener.onSuccess(finalResponse);
             }
         }, new Response.ErrorListener() {

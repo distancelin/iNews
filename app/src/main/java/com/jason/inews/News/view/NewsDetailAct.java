@@ -26,7 +26,6 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 public class NewsDetailAct extends AppCompatActivity implements NewsContract.NewsDetailView {
 
-    private Toolbar mToolbar;
     private NewsContract.NewsDetailPresenter mPresenter;
     private ImageView mImageView;
     private String[] mUrls;
@@ -42,13 +41,13 @@ public class NewsDetailAct extends AppCompatActivity implements NewsContract.New
     }
 
     private void initViews() {
-        mToolbar = (Toolbar) findViewById(R.id.newsDetailToolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.newsDetailToolbar);
         mImageView = (ImageView) findViewById(R.id.detailNewsImage);
 //        mWebView = (WebView) findViewById(R.id.detailNewsContent);
         mHtmlTextView = (HtmlTextView) findViewById(R.id.content);
         mUrls = getIntent().getStringArrayExtra("urls");
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collToolbarLayout);
-        collapsingToolbarLayout.setTitle("新闻详情");
+        CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collToolbarLayout);
+        mCollapsingToolbarLayout.setTitle("新闻详情");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
