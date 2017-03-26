@@ -14,7 +14,6 @@ public interface NewsContract {
     interface NewsCategoriesPresenter {
         void loadNews(int tabID, Context context);
 
-        void loadDetailNews(String newsDetailUrl, Context context);
     }
 
     interface NewsDetailPresenter {

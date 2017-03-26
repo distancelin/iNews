@@ -1,19 +1,17 @@
-package com.jason.inews.Main;
+package com.jason.inews.News.views;
 
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.jason.inews.News.view.NewsMainFra;
 import com.jason.inews.R;
-import com.jason.inews.Today.view.TodayFra;
 import com.jason.inews.Utils.FragmentUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         //设置drawer的item点击事件监听器
         setupWithNavigationView(mNavigationView);
-        FragmentUtil.addFragment(getSupportFragmentManager(), new NewsMainFra());
+        FragmentUtil.addFragment(getSupportFragmentManager(), new NewsMainFragment());
         getSupportActionBar().setTitle(R.string.news);
     }
 
@@ -55,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.news:
-                        FragmentUtil.switchFragment(getSupportFragmentManager(), new NewsMainFra());
+                        FragmentUtil.switchFragment(getSupportFragmentManager(), new NewsMainFragment());
                         getSupportActionBar().setTitle(R.string.news);
                         break;
                     case R.id.today:
-                        FragmentUtil.switchFragment(getSupportFragmentManager(), new TodayFra());
-                        getSupportActionBar().setTitle(R.string.today);
                         break;
                 }
                 item.setChecked(true);

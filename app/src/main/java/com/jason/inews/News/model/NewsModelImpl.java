@@ -11,10 +11,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.NewsContract;
-import com.jason.inews.News.volleyStringRequest.CharsetStringRequest;
+import com.jason.inews.News.api.volleyStringRequest.CharsetStringRequest;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Created by 16276 on 2017/1/18.

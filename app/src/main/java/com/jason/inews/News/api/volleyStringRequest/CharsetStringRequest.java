@@ -1,4 +1,4 @@
-package com.jason.inews.News.volleyStringRequest;
+package com.jason.inews.News.api.volleyStringRequest;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;

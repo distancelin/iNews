@@ -8,26 +8,25 @@
     <string name="newsDetail">新闻详情</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="tabs">
+    <string name="footerText">哥，这回真没了！</string>
+    <string name="contentFooter">已经读完了噢！</string>
+    <string-array name="myTabs">
         <item>头条</item>
         <item>社会</item>
         <item>体育</item>
         <item>时尚</item>
         <item>娱乐</item>
     </string-array>
-    <string-array name="adBlockUrl">
-        <item>ubmcmm.baidustatic.com</item>
-        <item>cpro2.baidustatic.com</item>
-        <item>cpro.baidustatic.com</item>
-        <item>s.lianmeng.360.cn</item>
-        <item>nsclick.baidu.com</item>
-        <item>pos.baidu.com</item>
-        <item>cbjs.baidu.com</item>
-        <item>cpro.baidu.com</item>
-        <item>images.sohu.com/cs/jsfile/js/c.js</item>
-        <item>union.sogou.com/</item>
-        <item>sogou.com/</item>
-        <item>a.baidu.com</item>
-        <item>c.baidu.com</item>
+    <string-array name="allNewsTypes">
+        <item>头条</item>
+        <item>社会</item>
+        <item>体育</item>
+        <item>时尚</item>
+        <item>娱乐</item>
+        <item>国内</item>
+        <item>国际</item>
+        <item>军事</item>
+        <item>科技</item>
+        <item>财经</item>
     </string-array>
 </resources>

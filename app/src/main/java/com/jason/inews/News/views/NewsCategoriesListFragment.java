@@ -1,4 +1,4 @@
-package com.jason.inews.News.view;
+package com.jason.inews.News.views;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.NewsContract;
-import com.jason.inews.News.adapters.RecyclerViewAdapter;
+import com.jason.inews.News.adapters.NewsRecyclerViewAdapter;
 import com.jason.inews.News.presenterImpl.NewsCategoriesPresenterImpl;
 import com.jason.inews.R;
 
@@ -30,20 +30,20 @@ import java.util.List;
  * Created by 16276 on 2017/1/26.
  */
 
-public class NewsCategoriesListFra extends Fragment implements NewsContract.NewsCategoriesView {
+public class NewsCategoriesListFragment extends Fragment implements NewsContract.NewsCategoriesView {
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private NewsContract.NewsCategoriesPresenter presenter;
-    private RecyclerViewAdapter recyclerAdapter;
+    private NewsRecyclerViewAdapter recyclerAdapter;
     private int tabID;
-    private boolean mIsVisibleToUser = false;
+    private View mFragmentView;
     private boolean mIsFirstLoading = true;
-
+    private boolean mIsVisibleToUser = false;
     //创建每一类新闻fragment的时候为其赋值新闻类型参数（tabId）
-    public static NewsCategoriesListFra newInstance(int newsType) {
+    public static NewsCategoriesListFragment newInstance(int newsType) {
         Bundle args = new Bundle();
         args.putInt("newsType", newsType);
-        NewsCategoriesListFra newsListFra = new NewsCategoriesListFra();
+        NewsCategoriesListFragment newsListFra = new NewsCategoriesListFragment();
         newsListFra.setArguments(args);
         return newsListFra;
     }
@@ -63,20 +63,25 @@ public class NewsCategoriesListFra extends Fragment implements NewsContract.News
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         tabID = getArguments().getInt("newsType");
-        if (isVisibleToUser) {
-            mIsVisibleToUser = true;
-            if (getContext() != null && mIsFirstLoading) {
+        mIsVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser && mIsFirstLoading) {
+            if (getContext() != null) {
                 if (tabID == 0) {
                     presenter = new NewsCategoriesPresenterImpl(this);
                 }
                 presenter.loadNews(tabID, getContext());
+                Log.i("H", "在setUser中加载新闻");
                 swipeRefreshLayout.setRefreshing(true);
                 mIsFirstLoading = false;
             }
-        } else {
-            mIsVisibleToUser = false;
         }
         Log.i("H", "fragment " + getArguments().getInt("newsType") + " setUserVisibleHint " + isVisibleToUser);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.i("H", "fragment " + getArguments().getInt("newsType") + " onAttach");
     }
 
     @Override
@@ -111,18 +116,23 @@ public class NewsCategoriesListFra extends Fragment implements NewsContract.News
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("H", "fragment " + getArguments().getInt("newsType") + " onCreateView");
-        View view = inflater.inflate(R.layout.fra_news, container, false);
-        presenter = new NewsCategoriesPresenterImpl(this);
-        setHasOptionsMenu(true);
-        initViews(view);
-        swtUpSwipeToRefresh(swipeRefreshLayout, tabID);
-        if (mIsVisibleToUser && mIsFirstLoading) {
-            presenter.loadNews(tabID, getContext());
-            swipeRefreshLayout.setRefreshing(true);
-            mIsFirstLoading = false;
+        tabID = getArguments().getInt("newsType");
+        if (mFragmentView == null) {
+            mFragmentView = inflater.inflate(R.layout.fragment_news, container, false);
+            Log.i("H", "fragment " + getArguments().getInt("newsType") + " onCreateView,这时mFragmentView==null,执行了创建操作");
+            presenter = new NewsCategoriesPresenterImpl(this);
+            setHasOptionsMenu(true);
+            initViews(mFragmentView);
+            swtUpSwipeToRefresh(swipeRefreshLayout, tabID);
+            Log.i("H", " " + getUserVisibleHint());
+            if (mIsVisibleToUser && mIsFirstLoading) {
+                presenter.loadNews(tabID, getContext());
+                swipeRefreshLayout.setRefreshing(true);
+                Log.i("H", "在onCreateView中加载新闻");
+                mIsFirstLoading = false;
+            }
         }
-        return view;
+        return mFragmentView;
     }
 
     private void initViews(View view) {
@@ -130,7 +140,7 @@ public class NewsCategoriesListFra extends Fragment implements NewsContract.News
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        recyclerAdapter = new RecyclerViewAdapter(null, this);
+        recyclerAdapter = new NewsRecyclerViewAdapter(null, this);
         rv.setAdapter(recyclerAdapter);
         rv.setHasFixedSize(true);
     }
@@ -162,7 +172,7 @@ public class NewsCategoriesListFra extends Fragment implements NewsContract.News
 
     @Override
     public void showNews(final List<NewsBean.ResultBean.DataBean> dataBeanList) {
-        recyclerAdapter.setDataBeanList(dataBeanList);
+        recyclerAdapter.setmDataBeans(dataBeanList);
         swipeRefreshLayout.setRefreshing(false);
 //        Toast.makeText(getContext(),"新闻更新完成",Toast.LENGTH_SHORT).show();
     }

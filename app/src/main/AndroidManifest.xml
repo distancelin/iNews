@@ -3,13 +3,15 @@
     package="com.jason.inews">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.jason.inews.Main.MainActivity"
+        <activity
+            android:name=".News.views.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,8 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.jason.inews.News.view.NewsDetailAct"
-            android:parentActivityName=".Main.MainActivity" />
+            android:name=".News.views.NewsDetailActivity"
+            android:parentActivityName=".News.views.MainActivity" />
+        <activity
+            android:name=".News.views.AddTabsActivity"
+            android:parentActivityName=".News.views.MainActivity" />
     </application>
 
 </manifest>
