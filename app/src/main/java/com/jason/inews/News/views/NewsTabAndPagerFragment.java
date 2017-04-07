@@ -17,7 +17,8 @@ import com.jason.inews.R;
 /**
  * Created by 16276 on 2017/1/25.
  */
-public class NewsMainFragment extends Fragment {
+public class NewsTabAndPagerFragment extends Fragment {
+
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_and_pager, container, false);
@@ -32,6 +33,10 @@ public class NewsMainFragment extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), AddTabsActivity.class));
             }
         });
+
+
         return view;
     }
+
+
 }

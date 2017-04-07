@@ -3,12 +3,13 @@
     package="com.jason.inews">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".APP"
         android:theme="@style/AppTheme">
         <activity
             android:name=".News.views.MainActivity"

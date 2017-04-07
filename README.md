@@ -20,7 +20,10 @@ complete  news content page by simply using of WebView(but news content comes wi
 improve the detail news page with html-textview,no ads remains in news content
 ### 2017.3.2
 implement ViewPager-lazy-loading
-
+### 2017.3.28
+replace Volley with Retrofit+okhttp+rxJava
+### 2017.4.3
+add local news cache by okhttp interceptors
 ## about me
 A new to Android development with strong desire.you can contact me at coder_Jason@163.com.
 By the way,may I have your star please 0.0

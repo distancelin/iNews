@@ -30,7 +30,7 @@ import java.util.List;
  * Created by 16276 on 2017/1/26.
  */
 
-public class NewsCategoriesListFragment extends Fragment implements NewsContract.NewsCategoriesView {
+public class NewsListFragment extends Fragment implements NewsContract.NewsCategoriesView {
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private NewsContract.NewsCategoriesPresenter presenter;
@@ -40,10 +40,10 @@ public class NewsCategoriesListFragment extends Fragment implements NewsContract
     private boolean mIsFirstLoading = true;
     private boolean mIsVisibleToUser = false;
     //创建每一类新闻fragment的时候为其赋值新闻类型参数（tabId）
-    public static NewsCategoriesListFragment newInstance(int newsType) {
+    public static NewsListFragment newInstance(int newsType) {
         Bundle args = new Bundle();
         args.putInt("newsType", newsType);
-        NewsCategoriesListFragment newsListFra = new NewsCategoriesListFragment();
+        NewsListFragment newsListFra = new NewsListFragment();
         newsListFra.setArguments(args);
         return newsListFra;
     }
@@ -60,20 +60,23 @@ public class NewsCategoriesListFragment extends Fragment implements NewsContract
         Log.i("H", "fragment " + getArguments().getInt("newsType") + " onStart");
     }
 
+    /**
+     * 该方法在fragment所有生命周期之前执行
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         tabID = getArguments().getInt("newsType");
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser && mIsFirstLoading) {
-            if (getContext() != null) {
-                if (tabID == 0) {
-                    presenter = new NewsCategoriesPresenterImpl(this);
-                }
-                presenter.loadNews(tabID, getContext());
+//            if (getContext() != null) {
+            if (tabID != 0) {
+//                    presenter = new NewsCategoriesPresenterImpl(this);
+                presenter.loadNews(tabID);
                 Log.i("H", "在setUser中加载新闻");
                 swipeRefreshLayout.setRefreshing(true);
                 mIsFirstLoading = false;
             }
+//            }
         }
         Log.i("H", "fragment " + getArguments().getInt("newsType") + " setUserVisibleHint " + isVisibleToUser);
     }
@@ -117,21 +120,22 @@ public class NewsCategoriesListFragment extends Fragment implements NewsContract
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         tabID = getArguments().getInt("newsType");
+        Log.i("H", "fragment " + tabID + "  onCreateView");
         if (mFragmentView == null) {
-            mFragmentView = inflater.inflate(R.layout.fragment_news, container, false);
+            mFragmentView = inflater.inflate(R.layout.fragment_news_list, container, false);
             Log.i("H", "fragment " + getArguments().getInt("newsType") + " onCreateView,这时mFragmentView==null,执行了创建操作");
             presenter = new NewsCategoriesPresenterImpl(this);
             setHasOptionsMenu(true);
             initViews(mFragmentView);
             swtUpSwipeToRefresh(swipeRefreshLayout, tabID);
-            Log.i("H", " " + getUserVisibleHint());
             if (mIsVisibleToUser && mIsFirstLoading) {
-                presenter.loadNews(tabID, getContext());
+                presenter.loadNews(tabID);
                 swipeRefreshLayout.setRefreshing(true);
                 Log.i("H", "在onCreateView中加载新闻");
                 mIsFirstLoading = false;
             }
         }
+
         return mFragmentView;
     }
 
@@ -149,7 +153,7 @@ public class NewsCategoriesListFragment extends Fragment implements NewsContract
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.loadNews(tabId, getContext());
+                presenter.loadNews(tabId);
             }
         });
     }
@@ -163,7 +167,7 @@ public class NewsCategoriesListFragment extends Fragment implements NewsContract
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                presenter.loadNews(tabID, getContext());
+                presenter.loadNews(tabID);
                 swipeRefreshLayout.setRefreshing(true);
                 break;
         }

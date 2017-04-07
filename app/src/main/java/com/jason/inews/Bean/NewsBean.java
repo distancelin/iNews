@@ -61,7 +61,6 @@ public class NewsBean {
 
         public static class DataBean {
 
-
             private String uniquekey;
             private String title;
             private String date;

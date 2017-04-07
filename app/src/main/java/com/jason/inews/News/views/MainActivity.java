@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         //设置drawer的item点击事件监听器
         setupWithNavigationView(mNavigationView);
-        FragmentUtil.addFragment(getSupportFragmentManager(), new NewsMainFragment());
+        FragmentUtil.addFragment(getSupportFragmentManager(), new NewsTabAndPagerFragment());
         getSupportActionBar().setTitle(R.string.news);
     }
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.news:
-                        FragmentUtil.switchFragment(getSupportFragmentManager(), new NewsMainFragment());
+                        FragmentUtil.switchFragment(getSupportFragmentManager(), new NewsTabAndPagerFragment());
                         getSupportActionBar().setTitle(R.string.news);
                         break;
                     case R.id.today:

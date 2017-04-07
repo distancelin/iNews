@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface NewsContract {
     interface NewsCategoriesPresenter {
-        void loadNews(int tabID, Context context);
+        void loadNews(int tabID);
 
     }
 
@@ -31,15 +31,5 @@ public interface NewsContract {
         void showProgress();
 
         void dismissProgress();
-    }
-    interface onNewsLoadingListener {
-        void onSuccess(List<NewsBean.ResultBean.DataBean> dataBeanList);
-
-        void onFail();
-    }
-
-    interface onDetaiNewsLoadingListener {
-        void onSuccess(String detailNews);
-        void onFail();
     }
 }

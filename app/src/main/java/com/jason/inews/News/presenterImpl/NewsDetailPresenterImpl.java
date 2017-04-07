@@ -3,16 +3,18 @@ package com.jason.inews.News.presenterImpl;
 import android.content.Context;
 
 import com.jason.inews.News.NewsContract;
+import com.jason.inews.News.callback.DetailNewsLoadingCallback;
 import com.jason.inews.News.model.NewsModelImpl;
-import com.jason.inews.News.model.iNewsModel;
+import com.jason.inews.News.model.NewsModel;
 
 /**
  * Created by distancelin on 2017/2/26.
  */
 
-public class NewsDetailPresenterImpl implements NewsContract.NewsDetailPresenter, NewsContract.onDetaiNewsLoadingListener {
+public class NewsDetailPresenterImpl implements NewsContract.NewsDetailPresenter, DetailNewsLoadingCallback {
     private NewsContract.NewsDetailView view;
-    private iNewsModel model;
+    private NewsModel model;
+
 
     public NewsDetailPresenterImpl(NewsContract.NewsDetailView view) {
         this.view = view;
