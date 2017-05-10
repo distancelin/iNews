@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jason.inews.Bean.NewsBean;
-import com.jason.inews.News.views.NewsDetailActivity;
+import com.jason.inews.News.callback.NewsItemClickCallback;
+import com.jason.inews.News.views.activity.NewsDetailActivity;
 import com.jason.inews.R;
 import com.jason.inews.Utils.ImageLoaderUtil;
 
@@ -24,7 +25,7 @@ import java.util.List;
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
     private List<NewsBean.ResultBean.DataBean> mDataBeans;
     private Fragment mFragment;
-
+    private NewsItemClickCallback mNewsClickListener;
     public void setmDataBeans(List<NewsBean.ResultBean.DataBean> dataBeans) {
         if (this.mDataBeans != null) {
             this.mDataBeans.clear();
@@ -32,6 +33,10 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         }
         this.mDataBeans = dataBeans;
         notifyDataSetChanged();
+    }
+
+    public void setNewsClickListener(NewsItemClickCallback mNewsClickListener) {
+        this.mNewsClickListener = mNewsClickListener;
     }
 
     public NewsRecyclerViewAdapter(List<NewsBean.ResultBean.DataBean> dataBeanList, Fragment fragment) {
@@ -45,10 +50,10 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == 1) {
             View newsView = inflater.inflate(R.layout.footer, parent, false);
-            return new ViewHolder(newsView, null, null);
+            return new ViewHolder(newsView, null);
         }
         View newsView = inflater.inflate(R.layout.news_item, parent, false);
-        return new ViewHolder(newsView, mFragment, mDataBeans);
+        return new ViewHolder(newsView, mDataBeans);
     }
 
     @Override
@@ -78,12 +83,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         return 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView picture;
         private TextView title;
         private TextView time;
 
-        ViewHolder(View itemView, final Fragment fragment, final List<NewsBean.ResultBean.DataBean> dataBeen) {
+        ViewHolder(View itemView, final List<NewsBean.ResultBean.DataBean> dataBean) {
             super(itemView);
             picture = (ImageView) itemView.findViewById(R.id.news_picture);
             title = (TextView) itemView.findViewById(R.id.news_title);
@@ -91,16 +96,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(fragment.getActivity(), NewsDetailActivity.class);
-                    String[] urls = new String[3];
-                    //获取新闻详情url
-                    urls[0] = dataBeen.get(ViewHolder.this.getAdapterPosition()).getUrl();
-                    //获取新闻图片url
-                    urls[1] = dataBeen.get(ViewHolder.this.getAdapterPosition()).getThumbnail_pic_s02();
-                    //获取新闻title
-                    urls[2] = dataBeen.get(ViewHolder.this.getAdapterPosition()).getTitle();
-                    intent.putExtra("urls", urls);
-                    fragment.getActivity().startActivity(intent);
+                    mNewsClickListener.onNewsItemClick(dataBean.get(ViewHolder.this.getAdapterPosition()));
                 }
             });
         }

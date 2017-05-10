@@ -11,7 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.jason.inews.News.callback.SwitchStateChangeCallback;
 import com.jason.inews.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by distancelin on 2017/3/4.
@@ -19,9 +22,16 @@ import com.jason.inews.R;
 
 public class NewsTypeAddRecyclerViewAdapter extends RecyclerView.Adapter<NewsTypeAddRecyclerViewAdapter.ViewHolder> {
     private String[] mAllNewsTypes;
+    private ArrayList<Boolean> mCheckedTypes;
+    private SwitchStateChangeCallback mSwitchStateChangeCallback;
 
-    public NewsTypeAddRecyclerViewAdapter(Resources mResources) {
-        this.mAllNewsTypes = mResources.getStringArray(R.array.allNewsTypes);
+    public void setSwitchStateChangeCallback(SwitchStateChangeCallback mSwitchStateChangeCallback) {
+        this.mSwitchStateChangeCallback = mSwitchStateChangeCallback;
+    }
+
+    public NewsTypeAddRecyclerViewAdapter(String[] tittles, ArrayList<Boolean> CheckedTypes) {
+        this.mAllNewsTypes = tittles;
+        this.mCheckedTypes = CheckedTypes;
     }
 
     @Override
@@ -35,6 +45,7 @@ public class NewsTypeAddRecyclerViewAdapter extends RecyclerView.Adapter<NewsTyp
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mNewsType.setText(mAllNewsTypes[position]);
+        holder.mSwitchNewsType.setChecked(mCheckedTypes.get(position));
     }
 
     @Override
@@ -43,7 +54,7 @@ public class NewsTypeAddRecyclerViewAdapter extends RecyclerView.Adapter<NewsTyp
         return mAllNewsTypes.length;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mNewsType;
         private Switch mSwitchNewsType;
 
@@ -54,7 +65,10 @@ public class NewsTypeAddRecyclerViewAdapter extends RecyclerView.Adapter<NewsTyp
             mSwitchNewsType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Log.i("H", newsTypes[getAdapterPosition()] + "checked=" + isChecked);
+                    int index = getAdapterPosition();
+                    String newsTittle = newsTypes[index];
+                    if (isChecked) mSwitchStateChangeCallback.onSwitchChecked(newsTittle);
+                    else mSwitchStateChangeCallback.onSwitchDischecked(newsTittle);
                 }
             });
         }

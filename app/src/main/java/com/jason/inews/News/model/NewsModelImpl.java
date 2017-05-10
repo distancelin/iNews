@@ -1,64 +1,56 @@
 package com.jason.inews.News.model;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.jason.inews.APP;
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.api.NewsApi;
 import com.jason.inews.News.api.retrofitApiInterface.NewsDetailApi;
 import com.jason.inews.News.api.retrofitApiInterface.NewsTypeApi;
-import com.jason.inews.News.api.retrofitManager.RetrofitManager;
-import com.jason.inews.News.api.volleyStringRequest.CharsetStringRequest;
+import com.jason.inews.News.api.retrofitManager.RetrofitService;
 import com.jason.inews.News.callback.DetailNewsLoadingCallback;
 import com.jason.inews.News.callback.NewsLoadingCallback;
-import com.jason.inews.Utils.NetUtil;
 
-import java.io.File;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by 16276 on 2017/1/18.
  */
 
 public class NewsModelImpl implements NewsModel {
-    // public void getNews(String url, Context context, final NewsContract.onNewsLoadingListener listener) {
-    //使用volley进行网络请求
-        /* RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                NewsBean bean = gson.fromJson(response, NewsBean.class);
-                List<NewsBean.ResultBean.DataBean> dataBeanList = bean.getResult().getData();
-                listener.onSuccess(dataBeanList);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(stringRequest);*/
+//     public void getNews(String url, Context context, final NewsContract.onNewsLoadingListener listener) {
+//    //使用volley进行网络请求
+//         RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Gson gson = new Gson();
+//                NewsBean bean = gson.fromJson(response, NewsBean.class);
+//                List<NewsBean.ResultBean.DataBean> dataBeanList = bean.getResult().getData();
+//                listener.onSuccess(dataBeanList);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//        requestQueue.add(stringRequest);*/
     //使用retrofit进行网络请求
 
 
@@ -86,20 +78,27 @@ public class NewsModelImpl implements NewsModel {
 //
 //            }
 //        });
-        NewsTypeApi newsTypeApi = RetrofitManager.getInstance(NewsTypeApi.class, NewsApi.NEWS_API_URL, true);
+        NewsTypeApi newsTypeApi = RetrofitService.getInstance(NewsTypeApi.class, NewsApi.NEWS_API_URL, true);
         Observable<NewsBean> call = newsTypeApi.call(newsType, key);
         //观察者的代码将会在mainThread执行
         call.subscribeOn(Schedulers.io())
+                //将返回的newsBean转换为list<dataBean>类型
+                .map(new Function<NewsBean, List<NewsBean.ResultBean.DataBean>>() {
+                    @Override
+                    public List<NewsBean.ResultBean.DataBean> apply(@NonNull NewsBean newsBean) throws Exception {
+                        return newsBean.getResult().getData();
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<NewsBean>() {
+                .subscribe(new Observer<List<NewsBean.ResultBean.DataBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(NewsBean newsBean) {
-                        callback.onSuccess(newsBean.getResult().getData());
+                    public void onNext(List<NewsBean.ResultBean.DataBean> datas) {
+                        callback.onSuccess(datas);
                     }
 
                     @Override
@@ -134,7 +133,7 @@ public class NewsModelImpl implements NewsModel {
 //            }
 //        });
 //        requestQueue.add(stringRequest);
-        NewsDetailApi newsDetailApi = RetrofitManager.getInstance(NewsDetailApi.class, detailNewsUrl + "/", false);
+        NewsDetailApi newsDetailApi = RetrofitService.getInstance(NewsDetailApi.class, detailNewsUrl + "/", false);
         Observable<ResponseBody> detailNewsCall = newsDetailApi.getDetailNews(detailNewsUrl);
         detailNewsCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

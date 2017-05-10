@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.jason.inews.News.views.AddTabsActivity">
+    tools:context="com.jason.inews.News.views.activity.AddTabsActivity">
 
     <include layout="@layout/toolbar" />
 

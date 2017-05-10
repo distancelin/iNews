@@ -1,4 +1,4 @@
-package com.jason.inews.News.views;
+package com.jason.inews.News.views.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

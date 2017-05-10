@@ -10,6 +10,21 @@ import com.jason.inews.News.model.NewsModelImpl;
 
 import java.util.List;
 
+import static com.jason.inews.News.api.NewsApi.CAI_JING;
+import static com.jason.inews.News.api.NewsApi.GUO_JI;
+import static com.jason.inews.News.api.NewsApi.GUO_NEI;
+import static com.jason.inews.News.api.NewsApi.JUN_SHI;
+import static com.jason.inews.News.api.NewsApi.KE_JI;
+import static com.jason.inews.News.api.NewsApi.SHE_HUI;
+import static com.jason.inews.News.api.NewsApi.SHI_SHANG;
+import static com.jason.inews.News.api.NewsApi.TI_yu;
+import static com.jason.inews.News.api.NewsApi.TOU_TIAO;
+import static com.jason.inews.News.api.NewsApi.TYPE_CAI_JING;
+import static com.jason.inews.News.api.NewsApi.TYPE_GUO_JI;
+import static com.jason.inews.News.api.NewsApi.TYPE_JUN_SHI;
+import static com.jason.inews.News.api.NewsApi.TYPE_KE_JI;
+import static com.jason.inews.News.api.NewsApi.YU_LE;
+
 /**
  * Created by 16276 on 2017/1/18.
  */
@@ -25,39 +40,38 @@ public class NewsCategoriesPresenterImpl implements NewsContract.NewsCategoriesP
 
     @Override
     public void loadNews(int tabID) {
-//        switch (tabID) {
-//            case 0:
-//                mNewsModel.getNews(NewsApi.NEWS_API_URL,NewsApi.TYPE_TOU_TIAO ,NewsApi.API_KEY);
-//                break;
-//            case 1:
-//                mNewsModel.getNews(NewsApi.NEWS_API_URL, NewsApi.TYPE_SHE_HUI ,NewsApi.API_KEY);
-//                break;
-//            case 2:
-//                mNewsModel.getNews(NewsApi.NEWS_API_URL ,NewsApi.TYPE_TI_YU ,NewsApi.API_KEY);
-//                break;
-//            case 3:
-//                mNewsModel.getNews(NewsApi.NEWS_API_URL, NewsApi.TYPE_SHI_SHANG ,NewsApi.API_KEY);
-//                break;
-//            case 4:
-//                mNewsModel.getNews(NewsApi.NEWS_API_URL ,NewsApi.TYPE_YU_LE , NewsApi.API_KEY);
-//        }
         String type = NewsApi.TYPE_TOU_TIAO;
         String key = NewsApi.API_KEY;
         switch (tabID) {
-            case 0:
+            case TOU_TIAO:
                 type = NewsApi.TYPE_TOU_TIAO;
                 break;
-            case 1:
+            case SHE_HUI:
                 type = NewsApi.TYPE_SHE_HUI;
                 break;
-            case 2:
+            case TI_yu:
                 type = NewsApi.TYPE_TI_YU;
                 break;
-            case 3:
+            case SHI_SHANG:
                 type = NewsApi.TYPE_SHI_SHANG;
                 break;
-            case 4:
+            case YU_LE:
                 type = NewsApi.TYPE_YU_LE;
+                break;
+            case GUO_NEI:
+                type = NewsApi.TYPE_GUO_NEI;
+                break;
+            case GUO_JI:
+                type = TYPE_GUO_JI;
+                break;
+            case JUN_SHI:
+                type = TYPE_JUN_SHI;
+                break;
+            case KE_JI:
+                type = TYPE_KE_JI;
+                break;
+            case CAI_JING:
+                type = TYPE_CAI_JING;
                 break;
         }
         mNewsModel.getNews(NewsApi.NEWS_API_URL, type, key, this);

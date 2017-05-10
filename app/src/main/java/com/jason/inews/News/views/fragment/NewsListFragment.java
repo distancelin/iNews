@@ -1,6 +1,7 @@
-package com.jason.inews.News.views;
+package com.jason.inews.News.views.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,9 @@ import android.widget.Toast;
 import com.jason.inews.Bean.NewsBean;
 import com.jason.inews.News.NewsContract;
 import com.jason.inews.News.adapters.NewsRecyclerViewAdapter;
+import com.jason.inews.News.callback.NewsItemClickCallback;
 import com.jason.inews.News.presenterImpl.NewsCategoriesPresenterImpl;
+import com.jason.inews.News.views.activity.NewsDetailActivity;
 import com.jason.inews.R;
 
 
@@ -30,7 +33,7 @@ import java.util.List;
  * Created by 16276 on 2017/1/26.
  */
 
-public class NewsListFragment extends Fragment implements NewsContract.NewsCategoriesView {
+public class NewsListFragment extends Fragment implements NewsContract.NewsCategoriesView, NewsItemClickCallback {
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private NewsContract.NewsCategoriesPresenter presenter;
@@ -39,6 +42,7 @@ public class NewsListFragment extends Fragment implements NewsContract.NewsCateg
     private View mFragmentView;
     private boolean mIsFirstLoading = true;
     private boolean mIsVisibleToUser = false;
+
     //创建每一类新闻fragment的时候为其赋值新闻类型参数（tabId）
     public static NewsListFragment newInstance(int newsType) {
         Bundle args = new Bundle();
@@ -69,13 +73,16 @@ public class NewsListFragment extends Fragment implements NewsContract.NewsCateg
         mIsVisibleToUser = isVisibleToUser;
         if (isVisibleToUser && mIsFirstLoading) {
 //            if (getContext() != null) {
-            if (tabID != 0) {
-//                    presenter = new NewsCategoriesPresenterImpl(this);
+//           presenter==null代表还未执行过onCreateView()回调
+            if (presenter == null) {
+//                presenter = new NewsCategoriesPresenterImpl(this);
+            } else {
                 presenter.loadNews(tabID);
                 Log.i("H", "在setUser中加载新闻");
                 swipeRefreshLayout.setRefreshing(true);
                 mIsFirstLoading = false;
             }
+
 //            }
         }
         Log.i("H", "fragment " + getArguments().getInt("newsType") + " setUserVisibleHint " + isVisibleToUser);
@@ -147,6 +154,11 @@ public class NewsListFragment extends Fragment implements NewsContract.NewsCateg
         recyclerAdapter = new NewsRecyclerViewAdapter(null, this);
         rv.setAdapter(recyclerAdapter);
         rv.setHasFixedSize(true);
+        setNewsClickListener();
+    }
+
+    private void setNewsClickListener() {
+        recyclerAdapter.setNewsClickListener(this);
     }
 
     private void swtUpSwipeToRefresh(SwipeRefreshLayout swipeRefreshLayout, final int tabId) {
@@ -184,5 +196,20 @@ public class NewsListFragment extends Fragment implements NewsContract.NewsCateg
     @Override
     public void showError(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNewsItemClick(NewsBean.ResultBean.DataBean dataBean) {
+        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+        String[] urls = new String[3];
+        //获取新闻详情url
+        urls[0] = dataBean.getUrl();
+        //获取新闻图片url
+        urls[1] = dataBean.getThumbnail_pic_s02();
+        //获取新闻title
+        urls[2] = dataBean.getTitle();
+        intent.putExtra("urls", urls);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.up, android.R.anim.fade_out);
     }
 }

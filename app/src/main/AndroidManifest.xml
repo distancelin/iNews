@@ -12,7 +12,7 @@
         android:name=".APP"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".News.views.MainActivity"
+            android:name=".News.views.activity.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".News.views.NewsDetailActivity"
-            android:parentActivityName=".News.views.MainActivity" />
+            android:name=".News.views.activity.NewsDetailActivity"
+            android:parentActivityName=".News.views.activity.MainActivity"
+            android:theme="@style/DetailNewsTheme" />
         <activity
-            android:name=".News.views.AddTabsActivity"
-            android:parentActivityName=".News.views.MainActivity" />
+            android:name=".News.views.activity.AddTabsActivity"
+            android:parentActivityName=".News.views.activity.MainActivity" />
     </application>
 
 </manifest>

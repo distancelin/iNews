@@ -10,11 +10,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="footerText">哥，这回真没了！</string>
     <string name="contentFooter">已经读完了噢！</string>
-    <string-array name="myTabs">
+    <string-array name="DefaultTabTittles">
         <item>头条</item>
-        <item>社会</item>
         <item>体育</item>
-        <item>时尚</item>
         <item>娱乐</item>
     </string-array>
     <string-array name="allNewsTypes">

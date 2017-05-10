@@ -13,11 +13,14 @@ import java.util.List;
 public interface NewsContract {
     interface NewsCategoriesPresenter {
         void loadNews(int tabID);
-
     }
 
     interface NewsDetailPresenter {
         void loadDetailNews(String newsDetailUrl, Context context);
+    }
+
+    interface NewsChannelPresenter {
+        void updateSharedPreference(String newsTittle, boolean checked);
     }
 
     interface NewsCategoriesView {

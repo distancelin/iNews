@@ -1,4 +1,4 @@
-package com.jason.inews.News.views;
+package com.jason.inews.News.views.activity;
 
 
 import android.os.Bundle;
@@ -9,10 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.jason.inews.News.event.NewsChannelChangeEvent;
+import com.jason.inews.News.rxbus.RxBus;
+import com.jason.inews.News.views.fragment.NewsTabAndPagerFragment;
 import com.jason.inews.R;
 import com.jason.inews.Utils.FragmentUtil;
+
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
